@@ -7,7 +7,7 @@ This program is supposed to work with the following input (enter at the programs
 > read data from IP 192.168.0.1 PORT 104
 > for each subject with more than 1 study select the first series that matches "3D-T1" in its SeriesDescription
 > print selected series
-> move selected to "BREWERDATA"
+> move selected to "AET01"
 ```
 
 I hope these commands are largely self-explanatory.
