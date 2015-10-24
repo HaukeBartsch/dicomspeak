@@ -29,6 +29,11 @@
 // referenced using a DICOM Application Entity Title (AETitle).
 //
 
+//
+// todo: query the dicom node offline, cache the results
+// todo: keep a list of data sources (more than dicom, add XNAT and REDCap)
+//
+
 var repl = require('repl');
 var PEG  = require('pegjs');
 var fs   = require('fs');
@@ -39,7 +44,7 @@ var exec = require('child_process').exec;
 // and the selected data that we can process further (i.e. move somewhere).
 var data = [];
 var selected = [];
-var fromDataromIP = "";
+var fromDataIP   = "";
 var fromDataPort = "";
 
 function getDataFromDicomNode(ip, port) {

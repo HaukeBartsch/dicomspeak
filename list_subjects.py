@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 """
-Query a DICOM node using findscu, returns list of subjects.
+Query a DICOM node using findscu, returns list of subjects. In order to support long
+queries the script will query for all study instance uids first. For each of those a
+second query for the series is performed. No query using patient information is used
+because OsiriX for example only supports Study and Series level findscu queries.
+
 This script depends on the dcmtk tools to be available in '/Applications/dcmtk/bin/'.
 
 Usage:
@@ -28,6 +32,8 @@ or to get a list of all series that start with "3D-T1" in their series descripti
 or to get a string of studyinstance uid etc from the matching entries:
 > python list_subjects.py 128.54.39.72 11112 | jq '[.[] | select(.SeriesDescription| match("^3D-T1"))]' | jq ".[] | [.StudyInstanceUID, .SeriesInstanceUID, .PatientID, .SeriesDescription]" | jq  'map("\(.) ") | add'
 
+TODO: A single query for all study instance uids could be too large (hit max on returned entries). In that case we
+      should query for subsets of Studies - can this be done by time? (findscu question)
 """
 import dicom
 import tempfile
