@@ -1,6 +1,9 @@
 # dicomspeak
 Pull DICOM images from a PACS system, filter and send to another destination.
 
+Actually, the program will ask the PACS system what image series are present, filter that list, ask the PACS 
+system to send the selected sub-set to a destination that needs to be known already to the PACS system.
+
 ## Usage
 This program is supposed to work with the following input (enter at the programs prompt):
 ```
@@ -8,6 +11,7 @@ This program is supposed to work with the following input (enter at the programs
 > for each subject with more than 1 study select the first series that matches "3D-T1" in its SeriesDescription
 > print selected series
 > move selected to "AET01"
+> quit
 ```
 
 I hope these commands are largely self-explanatory.
