@@ -105,6 +105,17 @@ function parse(cmd, context, filename, callback) {
 	} else if (action.action == 'move') {
 	    console.log('starting moving data to new machine...');
 	    move(selected, action.destinationAETitle, 0);
+    } else if (action.action == 'help') {
+        console.log('help for ' + action.what.join("") + ' requested.');
+        console.log('valid commands are \'read\', \'print\', \'foreach\', and \'move\'.');
+        console.log('Example:');
+        console.log('  > read data from IP 192.168.0.1 PORT 104');
+        console.log('  > for each subject with more than 1 study select the first series that matches "3D-T1" in its SeriesDescription');
+        console.log('  > print selected series');
+        console.log('  > move selected to "AET01"');
+    } else if (action.action == 'quit') {
+        console.log('ok, bye!');
+        process.exit(0);
 	} else {
 	    console.log('unknown action: ' + JSON.stringify(action, null, 2));
 	    return;

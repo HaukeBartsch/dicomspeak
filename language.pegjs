@@ -22,6 +22,8 @@ command
     / printselected
     / move
     / foreach
+    / help
+    / quit
 
 move
     = ws move_word ws "to" ws dest:word ws "\n" { return [{ 'action': 'move', 'destinationAETitle': dest.join("") }]; }
@@ -29,6 +31,16 @@ move
 foreach
     = ws for_word ws each_word ws tar:target ws "with" ws wi:with_statements ws se:selects "\n" {
         return [{ 'action': 'foreach', 'target': tar, 'with': wi, 'select': se }];
+    }
+
+help
+    = ws "help" ws what:word ws "\n" {
+        return [{ 'action': 'help', 'what': what }];
+    }
+
+quit
+    = ws "quit" ws "\n" {
+        return [{ 'action': 'quit' }];
     }
 
 target
