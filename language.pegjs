@@ -41,6 +41,9 @@ help
     = ws "help" ws what:word ws "\n" {
         return [{ 'action': 'help', 'what': what }];
     }
+    / ws "help" ws "\n" {
+        return [{ 'action': 'help', 'what': 'all' }];
+    }
 
 quit
     = ws "quit" ws "\n" {

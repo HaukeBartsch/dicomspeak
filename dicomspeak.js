@@ -99,6 +99,8 @@ function parse(cmd, context, filename, callback) {
             process.stdout.write('dicomspeak > '); // we do nothing
 	} else if (action.action == 'dataFromDicomNode') {
 	    getDataFromDicomNode(action.ip, action.port);
+	    console.log(' request data...');
+            process.stdout.write('dicomspeak > '); // we do nothing	    
 	} else if (action.action == 'foreach') {
 	    console.log(JSON.stringify(action, null, 2));
 	    doForEach(action);
@@ -108,13 +110,18 @@ function parse(cmd, context, filename, callback) {
 	    console.log('starting moving data to new machine...');
 	    move(selected, action.destinationAETitle, 0);
     } else if (action.action == 'help') {
-        console.log('help for ' + action.what.join("") + ' requested.');
-        console.log('valid commands are \'read\', \'print\', \'foreach\', and \'move\'.');
-        console.log('Example:');
-        console.log('  > read data from IP 192.168.0.1 PORT 104');
-        console.log('  > for each subject with more than 1 study select the first series that matches "3D-T1" in its SeriesDescription');
-        console.log('  > print selected series');
-        console.log('  > move selected to "AET01"');
+	if ( action.what == 'all') {
+	    console.log('help <subject>,   [read, print, foreach, move]');
+	} else {
+	    console.log('help for ' + action.what.join("") + ' requested.');
+	    console.log('valid commands are \'read\', \'print\', \'foreach\', and \'move\'.');
+	    console.log('Example:');
+	    console.log('  > read data from IP 192.168.0.1 PORT 104');
+	    console.log('  > for each subject with more than 1 study select the first series that matches "3D-T1" in its SeriesDescription');
+	    console.log('  > print selected series');
+	    console.log('  > move selected to "AET01"');
+	}
+        process.stdout.write('dicomspeak > '); // we do nothing	
     } else if (action.action == 'quit') {
         console.log('ok, bye!');
         process.exit(0);
@@ -249,13 +256,13 @@ function doForEach(action) {
 	    
 	    selected2 = processChain(selected2, idxBy, action.select.chain[c].limitTo.chain);
 	    // next we apply the select chain itself
-	    var idxBySeries2 = indexBy(selected2);
+	    var idxBySeries2 = []; // indexBy(selected2);
 	    if (action.select.chain[c].target == 'series') { // switch to sort by study (to group series together)
 		idxBySeries2 = indexByStudy(selected2);
 	    } else if (action.select.chain[c].target == 'study') {
 		idxBySeries2 = indexBySubject(selected2);
 	    } else {
-
+		console.log("Error: unknown target level, should be series or study");
 	    }
 	    selected2 = processChain(selected2, idxBySeries2, [action.select.chain[c]]);
 	}
