@@ -329,7 +329,7 @@ function move(data, destinationAETitle, count) {
 	if (error !== null) {
 	    console.log('exec error: ' + error); // stops all further computations
 	} else { // on success send the next entry
-	    move(data, ip, port, destinationAETitle, count+1); // call recursive
+	    move(data, destinationAETitle, count+1); // call recursive
 	}
     });
     if (count == data.length-1)
