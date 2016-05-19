@@ -24,6 +24,10 @@ command
     / foreach
     / help
     / quit
+    / nothing
+
+nothing
+    = ws "\n" { return [{ 'action': 'nothing' }]; }
 
 move
     = ws move_word ws "to" ws dest:word ws "\n" { return [{ 'action': 'move', 'destinationAETitle': dest.join("") }]; }

@@ -95,6 +95,8 @@ function parse(cmd, context, filename, callback) {
 	var action = result[i];
 	if (action.action == 'print') {
 	    console.log(printData(action.what));
+        } else if (action.action == 'nothing') {
+            process.stdout.write('dicomspeak > '); // we do nothing
 	} else if (action.action == 'dataFromDicomNode') {
 	    getDataFromDicomNode(action.ip, action.port);
 	} else if (action.action == 'foreach') {
