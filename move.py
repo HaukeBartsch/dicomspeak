@@ -27,7 +27,8 @@ if __name__ == "__main__":
         temp.close()
         temp2.close()
         try:
-            e = subprocess.check_output([ "/Applications/dcmtk/bin/dump2dcm", "+te", temp.name, temp2.name ])
+            #e = subprocess.check_output([ "/Applications/dcmtk/bin/dump2dcm", "+te", temp.name, temp2.name ])
+            e = subprocess.check_output([ "dump2dcm", "+te", temp.name, temp2.name ])
         except OSError as e:
             print >>sys.stderr, "Execution of dump2dcm failed:", e
 
@@ -35,7 +36,8 @@ if __name__ == "__main__":
             # Here a series level findscu that seems to work for Osirix
             # cmd="/Applications/dcmtk/bin/findscu -v -S -k 0008,0052=\"SERIES\" -k 0010,0010=\"" + searchTerm + "*\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
             # Here a study level movescu
-            cmd="/Applications/dcmtk/bin/movescu --study -aem \"" + sys.argv[3] + "\" " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            #cmd="/Applications/dcmtk/bin/movescu --study -aem \"" + sys.argv[3] + "\" " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            cmd="movescu --study -aem \"" + sys.argv[3] + "\" " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
             # data = subprocess.check_output(cmd, shell=True, stderr=sys.stdout)
             p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
             data1, data = p.communicate()

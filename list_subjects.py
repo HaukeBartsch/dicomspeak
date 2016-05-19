@@ -54,7 +54,8 @@ if __name__ == "__main__":
         temp.close()
         temp2.close()
         try:
-            e = subprocess.check_output([ "/Applications/dcmtk/bin/dump2dcm", "+te", temp.name, temp2.name ])
+            # e = subprocess.check_output([ "/Applications/dcmtk/bin/dump2dcm", "+te", temp.name, temp2.name ])
+            e = subprocess.check_output([ "dump2dcm", "+te", temp.name, temp2.name ])
         except OSError as e:
             print >>sys.stderr, "Execution of dump2dcm failed:", e
 
@@ -62,7 +63,8 @@ if __name__ == "__main__":
             # here a series level findscu for Osirix
             # cmd="/Applications/dcmtk/bin/findscu -v -S -k 0008,0052=\"SERIES\" -k 0010,0010=\"" + searchTerm + "*\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
             # now a study level scu
-            cmd="/Applications/dcmtk/bin/findscu -v -S -k 0008,0052=\"STUDY\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            #cmd="/Applications/dcmtk/bin/findscu -v -S -k 0008,0052=\"STUDY\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            cmd="findscu -v -S -k 0008,0052=\"STUDY\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
             # data = subprocess.check_output(cmd, shell=True, stderr=sys.stdout)
             p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
             data1, data = p.communicate()
@@ -79,14 +81,18 @@ if __name__ == "__main__":
         # now query for each study its series
         data2 = []
         for study in studies:
+            cmd="findscu -v -S -k 0008,0052=\"SERIES\" -k 0020,000d=\"" + study + "\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            #print cmd
             try:
-                cmd="/Applications/dcmtk/bin/findscu -v -S -k 0008,0052=\"SERIES\" -k 0020,000d=\"" + study + "\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
-                # print cmd
                 # data = subprocess.check_output(cmd, shell=True, stderr=sys.stdout)
                 p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
                 data1, data = p.communicate()                 
             except OSError as e:
                 print >>sys.stderr, "Execution of findscu failed:", e
+            except TypeError as e:
+                #print >>sys.stderr, "findscu failed with TypeError: ", e, " on \"", cmd, "\""
+                continue
+            #print >>sys.stderr, "findscu worked without TypeError on \"", cmd, "\""
                 
             # split into different sections
             vars = re.compile(r'W: # Dicom-Data-Set', re.MULTILINE)
