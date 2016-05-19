@@ -76,12 +76,14 @@ if __name__ == "__main__":
         studies = []
         for match in vars.finditer(data):
             studyinstanceuid = match.groups()
-            studies.append( studyinstanceuid[0] )
+            siuid = studyinstanceuid[0].replace('\x00', '')
+            studies.append( siuid )
 
         # now query for each study its series
         data2 = []
         for study in studies:
-            cmd="findscu -v -S -k 0008,0052=\"SERIES\" -k 0020,000d=\"" + study + "\" -aec myself -aet OsiriX " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
+            #cmd=["findscu", "-v", "-S", "-k", "0008,0052=\"SERIES\"", "-k", "0020,000d=\"" + study + "\"", "-aec", "myself",  "-aet",  "OsiriX", sys.argv[1],sys.argv[2],temp2.name]
+            cmd="findscu -v -S -k 0008,0052=\"SERIES\" -k 0020,000d=\"" + study + "\" -aec myself -aet OsiriX" + " " + sys.argv[1] + " " + sys.argv[2] + " " + temp2.name
             #print cmd
             try:
                 # data = subprocess.check_output(cmd, shell=True, stderr=sys.stdout)
@@ -90,7 +92,7 @@ if __name__ == "__main__":
             except OSError as e:
                 print >>sys.stderr, "Execution of findscu failed:", e
             except TypeError as e:
-                #print >>sys.stderr, "findscu failed with TypeError: ", e, " on \"", cmd, "\""
+                print >>sys.stderr, "findscu failed with TypeError: ", e, " on \"", cmd, "\""
                 continue
             #print >>sys.stderr, "findscu worked without TypeError on \"", cmd, "\""
                 
