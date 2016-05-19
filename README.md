@@ -40,7 +40,7 @@ referenced using a DICOM Application Entity Title (AETitle).
 
 A convenient way to setup the system on MacOS is to use HomeBrew. Install the dcmtk package as well as node
 and python (2.7). Once node runs use its package manager npm to install pegjs and repl.history. Scripts used
-by the interpreter are written in python and depend on pydicom (use pip install pydicom to install).
+by the interpreter are written in python and depend on pydicom (use /usr/local/lib/pip install pydicom to install).
 Afterwards you should be able to execute:
 ```
   node dicomspeak.js
