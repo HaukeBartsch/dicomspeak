@@ -35,3 +35,13 @@ using a 'print selected series' statement.
 Lastly the selected series can be moved from the source DICOM system (specified by 'read data') to
 another DICOM aware computer. The target system has to be known by the source system and is
 referenced using a DICOM Application Entity Title (AETitle).
+
+## Setup
+
+A convenient way to setup the system on MacOS is to use HomeBrew. Install the dcmtk package as well as node
+and python (2.7). Once node runs use its package manager npm to install pegjs and repl.history. 
+Afterwards you should be able to execute:
+```
+  node dicomspeak.js
+```
+to start the command-line program that runs the language interpreter.
